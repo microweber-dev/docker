@@ -1,11 +1,7 @@
 FROM php:7.1-fpm-alpine
 
 # docker-entrypoint.sh dependencies
-RUN apk add --no-cache \
-# in theory, docker-entrypoint.sh is POSIX-compliant, but priority is a working, consistent image
-  bash \
-# BusyBox sed is not sufficient for some of our sed expressions
-  sed
+RUN apk add --no-cache bash sed
 
 # install the PHP extensions we need
 RUN set -ex; \
@@ -27,7 +23,7 @@ RUN set -ex; \
    | sort -u \
  )"; \
  apk add --virtual .microweber-phpexts-rundeps $runDeps; \
- apk del .build-deps
+ apk del .microweber-phpexts-rundeps
 
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php

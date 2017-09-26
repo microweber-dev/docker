@@ -43,14 +43,14 @@ RUN { \
 
 COPY config/php-fpm.conf /usr/local/etc/php-fpm.conf
 
-VOLUME /var/www/html
+VOLUME /usr/src/microweber/userfiles
 
 ENV MICROWEBER_VERSION 1.0.7
 ENV MICROWEBER_SHA1 abc-xyz
 
 RUN set -ex; \
- mkdir /usr/src/microweber; \
  curl -o microweber.zip -fSL "https://github.com/microweber/dist/raw/master/microweber-latest.zip"; \
+ mkdir -p /usr/src/microweber; \
  unzip microweber.zip -d /usr/src/microweber; \
  rm microweber.zip; \
  chown -R www-data:www-data /usr/src/microweber

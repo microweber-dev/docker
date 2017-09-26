@@ -1,12 +1,17 @@
 version: '3.3'
 services:
   microweber:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+#    build:
+#      context: .
+#      dockerfile: ./Dockerfile
+    image: microweber/microweber
     volumes:
-      - ./sock/:/var/run/php/
+      - php-socket:/var/run/php/
       - microweber:/usr/src/microweber
+    environment:
+      - POSTGRES_USER=microweber
+      - POSTGRES_PASSWORD=microweber
+      - POSTGRES_DB=microweber
     depends_on:
       - db
       - smtp
@@ -16,8 +21,8 @@ services:
     restart: always          
   db:
     image: postgres:9.6-alpine
-    #volumes:
-      #- "./db:/var/lib/postgresql/data"
+    volumes:
+      - ./db:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=microweber
       - POSTGRES_PASSWORD=microweber
@@ -30,7 +35,7 @@ services:
       - 443:443
     volumes:
       - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./sock/:/var/run/php/
+      - php-socket:/var/run/php/
       - microweber:/usr/src/microweber
     links:
       - microweber
@@ -49,3 +54,7 @@ services:
   #    - kek
 volumes:
   microweber:
+  php-socket:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs

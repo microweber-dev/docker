@@ -9,10 +9,15 @@ RUN set -ex; \
  apk add --no-cache --virtual .build-deps \
   libjpeg-turbo-dev \
   libpng-dev \
+  libxml2-dev \
+  icu-dev \
+  curl \
+  curl-dev \
+  postgresql-dev \
  ; \
  \
  docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr; \
- docker-php-ext-install gd pdo xml json intl curl opcache; \
+ docker-php-ext-install gd pdo xml pdo_mysql pdo_pgsql json intl curl opcache; \
  \
  runDeps="$( \
   scanelf --needed --nobanner --recursive \
@@ -23,7 +28,7 @@ RUN set -ex; \
    | sort -u \
  )"; \
  apk add --virtual .microweber-phpexts-rundeps $runDeps; \
- apk del .microweber-phpexts-rundeps
+ apk del .build-deps
 
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php
@@ -36,6 +41,8 @@ RUN { \
   echo 'opcache.enable_cli=1'; \
  } > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
+COPY config/php-fpm.conf /usr/local/etc/php-fpm.conf
+
 VOLUME /var/www/html
 
 ENV MICROWEBER_VERSION 1.0.7
@@ -43,12 +50,12 @@ ENV MICROWEBER_SHA1 abc-xyz
 
 RUN set -ex; \
  mkdir /usr/src/microweber; \
- curl -o microweber.zip -fSL "https://github.com/microweber/dist/archive/master.zip"; \
+ curl -o microweber.zip -fSL "https://github.com/microweber/dist/raw/master/microweber-latest.zip"; \
  unzip microweber.zip -d /usr/src/microweber; \
  rm microweber.zip; \
  chown -R www-data:www-data /usr/src/microweber
 
 COPY docker-entrypoint.sh /usr/local/bin/
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+#ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["php-fpm"]

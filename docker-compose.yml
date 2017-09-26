@@ -1,0 +1,51 @@
+version: '3.3'
+services:
+  microweber:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./sock/:/var/run/php/
+      - microweber:/usr/src/microweber
+    depends_on:
+      - db
+      - smtp
+    restart: always
+  smtp:
+    image: namshi/smtp
+    restart: always          
+  db:
+    image: postgres:9.6-alpine
+    #volumes:
+      #- "./db:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=microweber
+      - POSTGRES_PASSWORD=microweber
+      - POSTGRES_DB=microweber
+    restart: always
+  nginx:
+    image: nginx:alpine
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./sock/:/var/run/php/
+      - microweber:/usr/src/microweber
+    links:
+      - microweber
+  redis:
+    image: redis:4-alpine
+  #caddy:
+  #  image: abiosoft/caddy
+  #  ports:
+  #    - 80:80
+  #    - 443:443
+  # volumes:
+  #    - "{{ volume_path }}/Caddyfile:/etc/Caddyfile"
+  #    - "{{ volume_path }}/caddy:/root/.caddy"
+  #  restart: always
+  #  links:
+  #    - kek
+volumes:
+  microweber:

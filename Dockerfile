@@ -41,9 +41,10 @@ RUN { \
   echo 'opcache.enable_cli=1'; \
  } > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-COPY config/php-fpm.conf /usr/local/etc/php-fpm.conf
+COPY php-fpm.conf /usr/local/etc/php-fpm.conf
 
 VOLUME /usr/src/microweber/userfiles
+VOLUME /usr/src/microweber/config
 
 ENV MICROWEBER_VERSION 1.0.7
 ENV MICROWEBER_SHA1 abc-xyz
@@ -52,10 +53,10 @@ RUN set -ex; \
  curl -o microweber.zip -fSL "https://github.com/microweber/dist/raw/master/microweber-latest.zip"; \
  mkdir -p /usr/src/microweber; \
  unzip microweber.zip -d /usr/src/microweber; \
- rm microweber.zip; \
+ #rm microweber.zip; \
  chown -R www-data:www-data /usr/src/microweber
 
 COPY docker-entrypoint.sh /usr/local/bin/
 
-#ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["php-fpm"]

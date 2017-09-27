@@ -1,24 +1,26 @@
 version: '3.3'
 services:
   microweber:
-#    build:
-#      context: .
-#      dockerfile: ./Dockerfile
     image: microweber/microweber
     volumes:
       - php-socket:/var/run/php/
       - microweber:/usr/src/microweber
+      - ./config:/usr/src/microweber/config
+      - ./userfiles:/usr/src/microweber/userfiles
     environment:
-      - POSTGRES_USER=microweber
-      - POSTGRES_PASSWORD=microweber
-      - POSTGRES_DB=microweber
+      - DB_USER=microweber
+      - DB_PASS=microweber
+      - DB_NAME=microweber
+      - DB_ENGINE=pgsql
+      - DB_HOST=db
+      - DB_PREFIX=mw_
+      - SLEEP_LENGTH=2.5
     depends_on:
       - db
-      - smtp
-    restart: always
+    restart: on-failure:10
   smtp:
     image: namshi/smtp
-    restart: always          
+    restart: on-failure:10   
   db:
     image: postgres:9.6-alpine
     volumes:
@@ -27,20 +29,29 @@ services:
       - POSTGRES_USER=microweber
       - POSTGRES_PASSWORD=microweber
       - POSTGRES_DB=microweber
-    restart: always
+    restart: on-failure:10
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
   nginx:
     image: nginx:alpine
     ports:
       - 80:80
       - 443:443
     volumes:
-      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
-      - php-socket:/var/run/php/
+      - ./nginx.conf:/etc/nginx/nginx.conf
       - microweber:/usr/src/microweber
+      - php-socket:/var/run/php/
+      - ./config:/usr/src/microweber/config
+      - ./userfiles:/usr/src/microweber/userfiles
     links:
       - microweber
+    restart: on-failure:10
   redis:
     image: redis:4-alpine
+    restart: on-failure:10
   #caddy:
   #  image: abiosoft/caddy
   #  ports:
@@ -52,6 +63,7 @@ services:
   #  restart: always
   #  links:
   #    - kek
+
 volumes:
   microweber:
   php-socket:

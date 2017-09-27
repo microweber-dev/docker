@@ -1,6 +1,5 @@
 version: '3.3'
 services:
-  microweber:
     image: microweber/microweber
     volumes:
       - php-socket:/var/run/php/
@@ -29,11 +28,6 @@ services:
       - POSTGRES_PASSWORD=microweber
       - POSTGRES_DB=microweber
     restart: on-failure:10
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
   nginx:
     image: nginx:alpine
     ports:

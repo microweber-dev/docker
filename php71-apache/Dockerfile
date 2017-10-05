@@ -1,34 +1,23 @@
-FROM php:7.1-fpm-alpine
-
-# docker-entrypoint.sh dependencies
-RUN apk add --no-cache bash sed
+FROM php:7.1-apache
 
 # install the PHP extensions we need
+
 RUN set -ex; \
- \
- apk add --no-cache --virtual .build-deps \
-  libjpeg-turbo-dev \
-  libpng-dev \
-  libxml2-dev \
-  icu-dev \
-  curl \
-  curl-dev \
-  postgresql-dev \
- ; \
- \
- docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr; \
- docker-php-ext-install gd pdo xml pdo_mysql pdo_pgsql json intl curl opcache; \
- \
- runDeps="$( \
-  scanelf --needed --nobanner --recursive \
-   /usr/local/lib/php/extensions \
-   | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
-   | sort -u \
-   | xargs -r apk info --installed \
-   | sort -u \
- )"; \
- apk add --virtual .microweber-phpexts-rundeps $runDeps; \
- apk del .build-deps
+	\
+	apt-get update; \
+	apt-get install -y \
+		libjpeg-dev \
+		libpng-dev \
+		libxml2-dev \
+		libicu-dev \
+		libsqlite3-dev \
+		libcurl4-openssl-dev \
+		unzip \
+	; \
+	rm -rf /var/lib/apt/lists/*; \
+	\
+	docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr; \
+	docker-php-ext-install gd pdo xml pdo_mysql pdo_sqlite json intl curl opcache
 
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php
@@ -41,7 +30,7 @@ RUN { \
   echo 'opcache.enable_cli=1'; \
  } > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-COPY php-fpm.conf /usr/local/etc/php-fpm.conf
+RUN a2enmod rewrite expires
 
 VOLUME /usr/src/microweber/userfiles
 VOLUME /usr/src/microweber/config
@@ -59,4 +48,4 @@ RUN set -ex; \
 COPY docker-entrypoint.sh /usr/local/bin/
 
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["php-fpm"]
+CMD ["apache2-foreground"]

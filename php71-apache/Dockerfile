@@ -36,7 +36,8 @@ VOLUME /usr/src/microweber/userfiles
 VOLUME /usr/src/microweber/config
 
 ENV MICROWEBER_VERSION 1.0.7
-ENV MICROWEBER_SHA1 abc-xyz
+
+WORKDIR /usr/src/microweber
 
 RUN set -ex; \
  curl -o microweber.zip -fSL "https://github.com/microweber/dist/raw/master/microweber-latest.zip"; \
@@ -46,6 +47,7 @@ RUN set -ex; \
  chown -R www-data:www-data /usr/src/microweber
 
 COPY docker-entrypoint.sh /usr/local/bin/
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["apache2-foreground"]

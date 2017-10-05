@@ -32,9 +32,6 @@ RUN { \
 
 RUN a2enmod rewrite expires
 
-VOLUME /usr/src/microweber/userfiles
-VOLUME /usr/src/microweber/config
-
 ENV MICROWEBER_VERSION 1.0.7
 
 WORKDIR /usr/src/microweber
@@ -48,6 +45,9 @@ RUN set -ex; \
 
 COPY docker-entrypoint.sh /usr/local/bin/
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+
+VOLUME /usr/src/microweber/userfiles
+VOLUME /usr/src/microweber/config
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["apache2-foreground"]

@@ -4,7 +4,7 @@
 
 There are two supported tags:
 - php71-apache - aio image, built on Debian Jessie, supports SQLite and MySQL
-- php71-fpm - based on Alpine linux and uses PHP-FPM
+- php71-fpm - based on Alpine linux and uses PHP-FPM, supports MySQL and PostgreSQL
  
 Please, use php71-apache tag for demo/testing/developement purposes and php71-fpm for production together with docker compose or with docker swarm.
 

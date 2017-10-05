@@ -19,6 +19,7 @@ git clone https://github.com/microweber/docker.git
 cd microweber
 docker-compose up -d
 ```
+After container(s) started, please, proceed and finish CMS installation using webui.
 
 # Environmental variables:
 There are several env. variables which can be used for database configuration (you can see in [docker-compose.yml](https://github.com/microweber/docker/blob/master/docker-compose.yml))
@@ -29,7 +30,7 @@ There are several env. variables which can be used for database configuration (y
 - DB_HOST - database host (can be mysql, pgsql and sqlite)
 - DB_PREFIX - database prefix if you need it (for example _mw)
 
-If you have database running on non-standart port, specify it using DB_HOST variable in following format `DB_HOST=<host>:<port>` (for example `DB_HOST=mysql:3222`). If DB_ENGINE and other 
+If you have database running on non-standart port, specify it using DB_HOST variable in following format `DB_HOST=<host>:<port>` (for example `DB_HOST=mysql:3222`). If DB env. vars are not defined and php71-apache tag is used, then SQLite will be used and system will be installed with default contents.
 
 # Volumes:
 - /usr/src/microweber/config - to store config files.

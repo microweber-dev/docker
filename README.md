@@ -35,3 +35,7 @@ If you have database running on non-standart port, specify it using DB_HOST vari
 # Volumes:
 - /usr/src/microweber/config - to store config files.
 - /usr/src/microweber/userfiles - to store various user files/plugins and data
+
+### Play With Docker
+you can also try Microweber CMS in PWD (Play With Docker) sandbox
+[![Try in PWD](https://raw.githubusercontent.com/microweber/docker/master/pwd_badge.png)](http://play-with-docker.com/?stack=https://raw.githubusercontent.com/microweber/docker/master/stack.yml) 

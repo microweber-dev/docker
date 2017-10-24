@@ -29,22 +29,21 @@ file_env() {
 if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
         if [ `ls -A /usr/src/microweber/config | wc -m` == "0" ]; then
             unzip microweber.zip 'config/*' -d /usr/src/microweber
-            chmod -R www-data:www-data /usr/src/microweber/config
+            chown -R www-data:www-data /usr/src/microweber/config
         fi
 
         if [ `ls -A /usr/src/microweber/userfiles | wc -m` == "0" ]; then
             unzip microweber.zip 'userfiles/*' -d /usr/src/microweber
-            chmod -R www-data:www-data /usr/src/microweber/userfiles
+            chown -R www-data:www-data /usr/src/microweber/userfiles
         fi
 
         if [ -f "/usr/src/microweber/config/microweber.php" ]
         then
                 echo "CMS is installed, skipping"
         else
-                su www-data | php /usr/src/microweber/artisan microweber:install
+                sudo -u www-data php /usr/src/microweber/artisan microweber:install
                 chown -R www-data:www-data /usr/src/microweber/storage
         fi
 fi
 
 exec "$@"
-

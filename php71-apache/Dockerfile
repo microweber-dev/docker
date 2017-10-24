@@ -13,6 +13,7 @@ RUN set -ex; \
 		libsqlite3-dev \
 		libcurl4-openssl-dev \
 		unzip \
+  sudo \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
 	\
@@ -40,7 +41,6 @@ RUN set -ex; \
  curl -o microweber.zip -fSL "https://github.com/microweber/dist/raw/master/microweber-latest.zip"; \
  mkdir -p /usr/src/microweber; \
  unzip microweber.zip -d /usr/src/microweber; \
- #rm microweber.zip; \
  chown -R www-data:www-data /usr/src/microweber
 
 COPY docker-entrypoint.sh /usr/local/bin/

@@ -1,7 +1,7 @@
 FROM php:7.1-fpm-alpine
 
 # docker-entrypoint.sh dependencies
-RUN apk add --no-cache bash sed
+RUN apk add --no-cache bash sed sudo
 
 # install the PHP extensions we need
 RUN set -ex; \
@@ -49,11 +49,13 @@ VOLUME /usr/src/microweber/config
 ENV MICROWEBER_VERSION 1.0.7
 ENV MICROWEBER_SHA1 abc-xyz
 
+RUN mkdir -p /var/run/php
+RUN chown www-data:www-data /var/run/php
+
 RUN set -ex; \
  curl -o microweber.zip -fSL "https://github.com/microweber/dist/raw/master/microweber-latest.zip"; \
  mkdir -p /usr/src/microweber; \
  unzip microweber.zip -d /usr/src/microweber; \
- #rm microweber.zip; \
  chown -R www-data:www-data /usr/src/microweber
 
 COPY docker-entrypoint.sh /usr/local/bin/

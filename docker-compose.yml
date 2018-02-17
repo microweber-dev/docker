@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   microweber:
-    image: microweber/microweber:php7.1-alpine
+    image: microweber/microweber:php7.1-fpm
     volumes:
       - php-socket:/var/run/php/
       - microweber:/usr/src/microweber

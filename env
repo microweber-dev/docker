@@ -1,0 +1,14 @@
+
+# APP MICROWEBER
+DB_USER=microweber
+DB_PASS=microweber
+DB_NAME=microweber
+DB_ENGINE=pgsql
+DB_HOST=db
+DB_PREFIX=mw_
+
+# DB POSTGRES
+POSTGRES_USER=microweber
+POSTGRES_PASSWORD=microweber
+POSTGRES_DB=microweber
+

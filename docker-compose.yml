@@ -7,13 +7,8 @@ services:
       - microweber:/usr/src/microweber
       - ./config:/usr/src/microweber/config
       - ./userfiles:/usr/src/microweber/userfiles
-    environment:
-      - DB_USER=microweber
-      - DB_PASS=microweber
-      - DB_NAME=microweber
-      - DB_ENGINE=pgsql
-      - DB_HOST=db
-      - DB_PREFIX=mw_
+    env_file:
+      - env
     depends_on:
       - db
     restart: on-failure:10
@@ -24,10 +19,8 @@ services:
     image: postgres:9.6-alpine
     volumes:
       - ./db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=microweber
-      - POSTGRES_PASSWORD=microweber
-      - POSTGRES_DB=microweber
+    env_file:
+      - env
     restart: on-failure:10
   nginx:
     image: nginx:alpine

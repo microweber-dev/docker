@@ -38,7 +38,7 @@ ENV MICROWEBER_VERSION 1.0.7
 WORKDIR /usr/src/microweber
 
 RUN set -ex; \
- curl -o microweber.zip -fSL "https://github.com/microweber/dist/raw/master/microweber-latest.zip"; \
+ curl -o microweber.zip -fSL "https://microweber.com/download.php"; \
  mkdir -p /usr/src/microweber; \
  unzip microweber.zip -d /usr/src/microweber; \
  chown -R www-data:www-data /usr/src/microweber

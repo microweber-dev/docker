@@ -43,22 +43,21 @@ RUN { \
 
 COPY php-fpm.conf /usr/local/etc/php-fpm.conf
 
-VOLUME /usr/src/microweber/userfiles
-VOLUME /usr/src/microweber/config
-
 ENV MICROWEBER_VERSION 1.0.7
 ENV MICROWEBER_SHA1 abc-xyz
 
 RUN mkdir -p /var/run/php
 RUN chown www-data:www-data /var/run/php
 
+
 RUN set -ex; \
  curl -o microweber.zip -fSL "https://microweber.com/download.php"; \
  mkdir -p /usr/src/microweber; \
- unzip microweber.zip -d /usr/src/microweber; \
+ unzip -o microweber.zip -d /usr/src/microweber; \
  chown -R www-data:www-data /usr/src/microweber
 
-COPY docker-entrypoint.sh /usr/local/bin/
+VOLUME /usr/src/microweber
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+#COPY docker-entrypoint.sh /usr/local/bin/
+
 CMD ["php-fpm"]

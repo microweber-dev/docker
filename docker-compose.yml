@@ -14,10 +14,10 @@ services:
       - DB_ENGINE=pgsql
       - DB_HOST=db
       - DB_PREFIX=mw_
-      - EMAIL=admin@admin.com
-      - USER=admin
-      - PASSWORD=password
-      - TEMPLATE=liteness
+      - MW_EMAIL=admin@admin.com
+      - MW_USER=admin
+      - MW_PASSWORD=password
+      - MW_TEMPLATE=liteness
     depends_on:
       - db
     restart: on-failure:10

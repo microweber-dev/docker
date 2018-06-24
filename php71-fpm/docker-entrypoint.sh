@@ -61,7 +61,7 @@ if [[ "$1" == php-fpm ]]; then
                 echo "CMS is installed, skipping"
         elif [ -n "$DB_ENGINE" ]; then
         	    echo "Install CMS using $DB_ENGINE"
-        	    sudo -u www-data php /usr/src/microweber/artisan microweber:install $EMAIL $USER $PASSWORD $DB_HOST $DB_NAME $DB_USER $DB_PASSWORD -p $DB_PREFIX -t $TEMPLATE -d 1
+        	    sudo -u www-data php /usr/src/microweber/artisan microweber:install $MW_EMAIL $MW_USER $MW_PASSWORD $DB_HOST $DB_NAME $DB_USER $DB_PASSWORD -p $DB_PREFIX -t $MW_TEMPLATE -d 1
         else
                 echo "CMS is not installed, but there is no installation parameters (you can perform installation later), skipping"
         fi

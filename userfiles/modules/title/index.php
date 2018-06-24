@@ -1,1 +1,0 @@
-<h1 class="element"><?php _e('This is my title'); ?></h1>

@@ -1,3 +1,0 @@
-<?php
-
-dd(User::all());

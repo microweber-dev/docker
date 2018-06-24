@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   microweber:
-    image: microweber/microweber:php7.1-alpine
+    image: microweber/microweber:php7.1-fpm
     volumes:
       - php-socket:/var/run/php/
       - microweber:/usr/src/microweber
@@ -14,6 +14,10 @@ services:
       - DB_ENGINE=pgsql
       - DB_HOST=db
       - DB_PREFIX=mw_
+      - EMAIL=admin@admin.com
+      - USER=admin
+      - PASSWORD=password
+      - TEMPLATE=liteness
     depends_on:
       - db
     restart: on-failure:10

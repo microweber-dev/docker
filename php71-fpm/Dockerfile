@@ -58,6 +58,6 @@ RUN set -ex; \
 
 VOLUME /usr/src/microweber
 
-#COPY docker-entrypoint.sh /usr/local/bin/
+COPY docker-entrypoint.sh /usr/local/bin/
 
 CMD ["php-fpm"]

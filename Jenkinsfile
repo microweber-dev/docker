@@ -200,9 +200,9 @@ pipeline {
             dir('cypress/') {
               script {
                 def app = docker.build("microweber/cypress")
-                app.inside {
-                  sh 'echo "Tests passed"'
-                }
+                // app.inside {
+                //   sh 'echo "Tests passed"'
+                // }
                 docker.withRegistry('https://registry.hub.docker.com', 'microweber-dockerhub') {
                     app.push("latest")
                 }

@@ -6,7 +6,7 @@ FROM php:7.4-rc-apache
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
 RUN apt update \
- && apt --no-install-recommends -y install git subversion openssh-client mercurial tini bash patch make zip unzip coreutils libz-dev libxml2-dev libzip-dev libpng-dev libpq-dev \
+ && apt --no-install-recommends -y install git subversion openssh-client mercurial tini bash patch make zip unzip coreutils libz-dev libcurl-dev libxml2-dev libzip-dev libpng-dev libpq-dev \
  && docker-php-ext-configure zip --with-libzip \
  && docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) zip opcache gd pgsql pdo_pgsql pdo_mysql fileinfo xml curl json zip dom \
  && printf "# composer php cli ini settings\n\

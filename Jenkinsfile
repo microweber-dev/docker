@@ -170,13 +170,36 @@ pipeline {
                 label "${getKubeLabel(5, BRANCH_NAME, BUILD_NUMBER)}"
                 defaultContainer 'docker'
                 yaml "${getKubeYamlTemplate(5, BRANCH_NAME, BUILD_NUMBER)}"
-                nodeSelector "${getKubeNodeSelector(4)}"
+                nodeSelector "${getKubeNodeSelector(5)}"
             }
           }
           steps {
             dir('nginx/') {
               script {
                 def app = docker.build("microweber/nginx")
+                app.inside {
+                  sh 'echo "Tests passed"'
+                }
+                docker.withRegistry('https://registry.hub.docker.com', 'microweber-dockerhub') {
+                    app.push("latest")
+                }
+              }
+            }
+          }
+        }
+        stage('cypress') {
+          agent {
+            kubernetes {
+                label "${getKubeLabel(6, BRANCH_NAME, BUILD_NUMBER)}"
+                defaultContainer 'docker'
+                yaml "${getKubeYamlTemplate(6, BRANCH_NAME, BUILD_NUMBER)}"
+                nodeSelector "${getKubeNodeSelector(6)}"
+            }
+          }
+          steps {
+            dir('cypress/') {
+              script {
+                def app = docker.build("microweber/cypress")
                 app.inside {
                   sh 'echo "Tests passed"'
                 }

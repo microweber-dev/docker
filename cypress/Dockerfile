@@ -3,7 +3,7 @@ FROM cypress/browsers:node11.13.0-chrome73
 # avoid too many progress messages
 # https://github.com/cypress-io/cypress/issues/1243
 ENV CI=1
-ARG CYPRESS_VERSION="3.4.1"
+ARG CYPRESS_VERSION="3.2.0"
 
 RUN echo "whoami: $(whoami)"
 RUN npm config -g set user $(whoami)
